@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Latent Concept Misalignment in Diffusion Models">
+  <meta name="keywords" content="Misalignment, Diffusion Models, LLMs">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lost in Translation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!--
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+-->
+
+<!-- Authors -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Lost in Translation: Latent Concept Misalignment in Diffusion Models</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://rossonerizhao-github-io.pages.dev">Juntu Zhao</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://joeyjoestar111.github.io">Junyu Deng*</a><sup>3</sup>,</span>
+            <span class="author-block">
+              <a href="https://bleaves.github.info">Yixin Ye*</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://zhenxuan00.github.io">Chongxuan Li</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://thudzj.github.io">Zhijie Deng</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://dequan.wang">Dequan Wang</a><sup>1,2</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Shanghai Jiao Tong University,</span>
+            <span class="author-block"><sup>2</sup>Shanghai Artificial Intelligence Laboratory,</span>
+            <span class="author-block"><sup>3</sup>Fudan University,</span>
+            <span class="author-block"><sup>4</sup>Renmin University of China</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://rossonerizhao-github-io.pages.dev"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://rossonerizhao-github-io.pages.dev"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/RossoneriZhao/iced_coke"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/Tutu1/LatentConceptMisalignment/tree/main/version1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser0.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf"></span> Images generated by several text-to-image models using the text prompt, "a tea cup of iced coke". A latent concept, "glass cup", replaces the required concept, "tea cup". This is a new branch of the text-image misalignment issue, and we call it "Latent Concept Misalignment" (LC-Mis).
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Advancements in text-to-image diffusion models have broadened extensive downstream practical applications, but such models often encounter misalignment issues between text and image. Taking the generation of a combination of two disentangled concepts as an example, say given the prompt "a tea cup of iced coke", existing models usually generate a glass cup of iced coke because the iced coke usually co-occurs with the glass cup instead of the tea one during model training. The root of such misalignment is attributed to the confusion in the latent semantic space of text-to-image diffusion models, and hence we refer to the "a tea cup of iced coke" phenomenon as Latent Concept Misalignment (LC-Mis). We leverage large language models (LLMs) to thoroughly investigate the scope of LC-Mis, and develop an automated pipeline for aligning the latent semantics of diffusion models to text prompts. Empirical assessments confirm the effectiveness of our approach, substantially reducing LC-Mis errors and enhancing the robustness and versatility of text-to-image diffusion models.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+
+<!-- Dataset -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Dataset</h2>
+
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img src="./static/images/dataset.png"
+                       class="interpolation-image"
+                       alt="Interpolate start reference image."/>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            We introduce a system that utilizes the reasoning ability of LLMs to find LC-Mi concept pairs to build our dataset. In this system, LLMs generate new concept pairs, and text-to-image models generate images for evaluation, and human experts are responsible for providing instructions and evaluations.
+          </p>
+          <ul>
+            <li>Phase 1: Human experts search for seed concept pairs themselves and summarize patterns.</li>
+            <li>Phase 2: LLMs generate more new concept pairs in each pattern.</li>
+            <li>Phase 3: LLMs generate new patterns and then more new concept pairs.</li>
+            <li>Phase 4: LLMs merge newly generated patterns with initial patterns to obtain more new concept pairs.</li>
+          </ul>
+
+          <p>
+          We can iterate the phase 2 - 4 to rapidly expand our LC-Mis dataset.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Method -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method</h2>
+
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img src="./static/images/method.png"
+                       class="interpolation-image"
+                       alt="Interpolate start reference image."/>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            We introduce our method, Mixture of Concept Experts (MoCE). Inspired by human painting nature, we input concepts into diffusion models in sequence. Specifically, LLMs provide concepts that are easily lost to paint first. We input it separately as the text prompt to diffusion models, sample <i>n</i> steps, and then input the complete text prompt. Here, <i>n</i> is determined by a binary search algorithm.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Result -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Result</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            The visualization results are as follows:
+          </p>
+        </div>
+
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img src="./static/images/result_teaser.png"
+                       class="interpolation-image"
+                       alt="Interpolate start reference image."/>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            The human evaluation results are as follows. The concept pairs with the highest frequency of LC-Mis are rated as Level 5. Our MoCE significantly improves the LC-Mis issue:
+          </p>
+        </div>
+
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img src="./static/images/result.png"
+                       class="interpolation-image"
+                       alt="Interpolate start reference image."/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Latest Result -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Recent Advances</h2>
+
+        <div class="container is-max-desktop">
+          <div class="hero-body">
+            <img src="./static/images/latest.png"
+                       class="interpolation-image"
+                       alt="Interpolate start reference image."/>
+          </div>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            We present results from the latest (available online as of July 7, 2024) Dall·E 3, Midjourney, and Stable Diffusion 3. In the example "a tea cup of iced coke", Without complex prompt engineering, models still perform poorly on the LC-Mis issue, as shown in Figure a, c and d. Complex prompt engineering from GPT-4 (Figure b) does help alleviate the issue. However, it’s important to note that this comes with significant annotation costs during Dall·E 3’s training, and is also accompanied by a certain degree of instability, highlighting the issue’s significance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{zhao2024icedcoke,
+  author = {Zhao, Juntu and Deng, Junyu and Ye, Yixin and Li, Chongxuan and Deng, Zhijie and Wang, Dequan},
+  title = {Lost in Translation: Latent Concept Misalignment in Diffusion Models},
+  journal = {ECCV},
+  year = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The template if borrowed from the <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
